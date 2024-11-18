@@ -26,4 +26,10 @@ class LoginController extends AbstractController
             $user->getUserIdentifier()
         ), 'user' => $user->getUserIdentifier()]);
     }
+
+    #[Route('/api/user', name: 'api_test', methods: ['GET'])]
+    public function test(#[CurrentUser] ?User $user): Response
+    {
+        return $this->json(['user' => $user?->getUserIdentifier()]);
+    }
 }
