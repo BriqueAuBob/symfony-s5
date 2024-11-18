@@ -6,7 +6,7 @@ use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 
-
+#[ORM\Entity]
 class Tag
 {
     use EntityTimestamps, Uuid;

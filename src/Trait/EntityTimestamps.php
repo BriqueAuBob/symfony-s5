@@ -14,13 +14,14 @@ trait EntityTimestamps
     public \DateTime $updatedAt;
 
     #[ORM\PrePersist]
-    public function setCreatedAtValue(): void
+    public function onPrePersist(): void
     {
         $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     #[ORM\PreUpdate]
-    public function setUpdatedAtValue(): void
+    public function onPreUpdate(): void
     {
         $this->updatedAt = new \DateTime();
     }

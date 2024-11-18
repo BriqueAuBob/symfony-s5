@@ -12,7 +12,6 @@ class Meta
 {
     use EntityTimestamps, Uuid;
 
-
     #[ORM\Column(length: 40)]
     public ?string $name = null;
 

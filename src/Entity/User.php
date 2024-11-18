@@ -2,69 +2,81 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity]
-class User
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: '`user`')]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use EntityTimestamps, Uuid;
 
-    #[ORM\Column(type: 'string', length: 50)]
-    public string $firstName;
+    #[ORM\Column(length: 180)]
+    public ?string $email = null;
 
-    #[ORM\Column(type: 'string', length: 50)]
-    public string $lastName;
+    #[ORM\Column]
+    public array $roles = [];
 
-    #[ORM\Column(type: 'string', length: 255)]
-    public string $email;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    public string $password;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    public string $role;
+    #[ORM\Column]
+    public ?string $password = null;
 
     /**
-     * @var Collection<int, Comment>
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
      */
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'author', orphanRemoval: true)]
-    private Collection $comments;
-
-    public function __construct()
+    public function getUserIdentifier(): string
     {
-        $this->comments = new ArrayCollection();
+        return (string) $this->email;
     }
 
     /**
-     * @return Collection<int, Comment>
+     * @see UserInterface
+     *
+     * @return list<string>
      */
-    public function getComments(): Collection
+    public function getRoles(): array
     {
-        return $this->comments;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
-    public function addComment(Comment $comment): static
+    /**
+     * @param list<string> $roles
+     */
+    public function setRoles(array $roles): static
     {
-        if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
-            $comment->setAuthor($this);
-        }
+        $this->roles = $roles;
 
         return $this;
     }
 
-    public function removeComment(Comment $comment): static
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
     {
-        if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getAuthor() === $this) {
-                $comment->setAuthor(null);
-            }
-        }
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
 
         return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
     }
 }
