@@ -10,6 +10,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Uid\UuidV4;
 
 #[AsCommand(
@@ -20,8 +22,11 @@ use Symfony\Component\Uid\UuidV4;
 )]
 class CreateUserCommand extends Command
 {
-    public function __construct(protected UserRepository $userRepository, protected EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        protected UserRepository $userRepository,
+        protected EntityManagerInterface $entityManager,
+        protected PasswordHasherInterface $passwordHasher
+    ) {
         parent::__construct();
     }
 
@@ -44,7 +49,7 @@ class CreateUserCommand extends Command
         $user->firstName = 'John';
         $user->lastName = 'Doe';
         $user->email = $email;
-        $user->password = password_hash($password, PASSWORD_ARGON2ID);
+        $user->password = $this->passwordHasher->hash($password);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

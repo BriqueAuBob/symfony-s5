@@ -2,6 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use App\ApiProcessor\CreateUserProcessor;
+use App\ApiResource\CreateUser;
 use App\Repository\UserRepository;
 use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
@@ -15,6 +20,9 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ApiResource]
+#[GetCollection]
+#[Get]
+#[Post(input: CreateUser::class, processor: CreateUserProcessor::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use EntityTimestamps, Uuid;
