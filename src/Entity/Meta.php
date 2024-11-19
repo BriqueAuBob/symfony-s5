@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: MetaRepository::class)]
 #[ApiResource]
+#[ORM\HasLifecycleCallbacks]
 class Meta
 {
     use EntityTimestamps, Uuid;

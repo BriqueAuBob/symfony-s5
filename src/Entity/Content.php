@@ -13,6 +13,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Delete;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource]
@@ -21,11 +22,14 @@ use ApiPlatform\Metadata\Delete;
 #[Post]
 #[Put]
 #[Delete]
+#[ORM\HasLifecycleCallbacks]
 class Content
 {
     use EntityTimestamps, Uuid;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255)]
     public ?string $title;
 
     #[ORM\Column(type: 'text')]

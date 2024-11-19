@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ApiResource]
+#[ORM\HasLifecycleCallbacks]
 class Comment
 {
     use EntityTimestamps, Uuid;

@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity]
 #[ApiResource]
+#[ORM\HasLifecycleCallbacks]
 class Tag
 {
     use EntityTimestamps, Uuid;
