@@ -46,8 +46,6 @@ class CreateUserCommand extends Command
 
         $user = new User();
         $user->id = UuidV4::v4();
-        $user->firstName = 'John';
-        $user->lastName = 'Doe';
         $user->email = $email;
         $user->password = $this->passwordHasher->hash($password);
 
