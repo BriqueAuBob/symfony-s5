@@ -7,9 +7,20 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
-
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
 
 #[ORM\Entity]
+#[ApiResource]
+#[Get]
+#[GetCollection]
+#[Post]
+#[Put]
+#[Delete]
 class Content
 {
     use EntityTimestamps, Uuid;

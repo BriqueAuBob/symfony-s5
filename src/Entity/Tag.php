@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity]
+#[ApiResource]
 class Tag
 {
     use EntityTimestamps, Uuid;

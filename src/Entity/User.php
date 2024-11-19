@@ -8,10 +8,13 @@ use App\Trait\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ApiResource]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use EntityTimestamps, Uuid;
@@ -23,6 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public array $roles = [];
 
     #[ORM\Column]
+    #[Ignore]
     public ?string $password = null;
 
     /**
