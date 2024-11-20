@@ -7,6 +7,7 @@ use App\Trait\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -21,5 +22,6 @@ class Tag
     #[ORM\Column(type: 'string', length: 50)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 1, max: 50)]
+    #[Groups(['content:read'])]
     public ?string $name;
 }

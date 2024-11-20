@@ -18,10 +18,11 @@ use App\Trait\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
-#[ApiResource]
+#[ApiResource(normalizationContext: ['groups' => ['content:read']])]
 #[GetCollection]
 #[Get(uriVariables: 'slug')]
 #[Delete(uriVariables: 'slug')]
@@ -41,38 +42,44 @@ class Content
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 1, max: 255)]
+    #[Groups(['content:read'])]
     public ?string $title;
 
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
     #[Assert\Length(min: 1)]
+    #[Groups(['content:read'])]
     public ?string $content;
 
     #[ORM\Column(type: 'text')]
+    #[Groups(['content:read'])]
     public ?string $slug = null;
 
-    // thumbnail, tags with relationships, author with relationships, meta tags with relationships
-    #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank]
-    #[Assert\Length(min: 1)]
-    public ?string $thumbnail = null;
+    #[ORM\OneToOne(targetEntity: Upload::class)]
+    #[ApiProperty]
+    #[Groups(['content:read'])]
+    public ?Upload $thumbnail = null;
 
     #[ORM\ManyToMany(targetEntity: Tag::class)]
     #[ApiProperty]
+    #[Groups(['content:read'])]
     public ?Collection $tags = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[ApiProperty(writable: false)]
+    #[Groups(['content:read'])]
     public ?User $author = null;
 
     #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'content')]
+    #[Groups(['content:read'])]
     private ?Collection $meta = null;
 
     /**
      * @var Collection<int, Comment>
      */
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'content', orphanRemoval: true)]
+    #[Groups(['content:read'])]
     private ?Collection $comments = null;
 
     public function __construct()

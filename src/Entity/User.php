@@ -7,7 +7,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Api\Processor\CreateUserProcessor;
-use App\Api\ApiResource\CreateUser;
+use App\Api\Resource\CreateUser;
 use App\Repository\UserRepository;
 use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
@@ -15,6 +15,7 @@ use App\Validator\UnregisteredEmail;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -36,6 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(min: 1, max: 180)]
     #[Assert\Email]
     #[UnregisteredEmail]
+    #[Groups(['content:read'])]
     public ?string $email = null;
 
     #[ORM\Column]
