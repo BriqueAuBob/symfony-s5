@@ -44,6 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[Assert\NotBlank]
     #[Assert\NotNull]
+    #[Ignore]
     public ?string $password = null;
 
     /**

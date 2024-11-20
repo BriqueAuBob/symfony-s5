@@ -7,6 +7,7 @@ use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ApiResource]
@@ -24,5 +25,7 @@ class Comment
     public ?Content $content = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255)]
     public ?string $text = null;
 }

@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Put]
 #[Delete]
 #[ORM\HasLifecycleCallbacks]
-#[Post(processor: CreateContentProcessor::class)]
+#[Post(security: 'is_granted("ROLE_ADMIN")', processor: CreateContentProcessor::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_SLUG', fields: ['slug'])]
 class Content
 {
@@ -46,9 +46,12 @@ class Content
 
     // thumbnail, tags with relationships, author with relationships, meta tags with relationships
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1)]
     public ?string $thumbnail;
 
     #[ORM\ManyToMany(targetEntity: Tag::class)]
+    #[ApiProperty]
     public Collection $tags;
 
     #[ORM\ManyToOne]

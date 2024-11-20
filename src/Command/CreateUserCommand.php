@@ -16,10 +16,9 @@ use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Uid\UuidV4;
 
 #[AsCommand(
-    name: 'app:create-user',
+    name: 'app:security:create-user',
     description: 'Creates a new user.',
     hidden: false,
-    aliases: ['app:add-user']
 )]
 class CreateUserCommand extends Command
 {
