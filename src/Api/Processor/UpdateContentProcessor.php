@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\ApiProcessor;
+namespace App\Api\Processor;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\ApiResource\CreateContent;
+use App\Api\Resource\CreateContent;
 use App\Entity\Content;
 use App\Service\Slug;
 use Doctrine\ORM\EntityManagerInterface;

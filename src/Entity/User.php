@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
-use App\ApiProcessor\CreateUserProcessor;
-use App\ApiResource\CreateUser;
+use App\Api\Processor\CreateUserProcessor;
+use App\Api\ApiResource\CreateUser;
 use App\Repository\UserRepository;
 use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
@@ -14,7 +15,6 @@ use App\Validator\UnregisteredEmail;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 

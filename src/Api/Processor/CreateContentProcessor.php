@@ -1,20 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace App\ApiProcessor;
+namespace App\Api\Processor;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use ApiPlatform\Symfony\Routing\IriConverter;
 use ApiPlatform\Validator\ValidatorInterface;
-use App\ApiResource\CreateContent;
+use App\Api\Resource\CreateContent;
 use App\Entity\Content;
-use App\Entity\User;
 use App\Service\Slug;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Uid\UuidV4;
 
 final readonly class CreateContentProcessor implements ProcessorInterface
 {

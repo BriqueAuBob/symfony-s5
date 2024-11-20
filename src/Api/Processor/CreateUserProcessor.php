@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\ApiProcessor;
+namespace App\Api\Processor;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use ApiPlatform\Validator\ValidatorInterface;
-use App\ApiResource\CreateUser;
+use App\Api\Resource\CreateUser;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
