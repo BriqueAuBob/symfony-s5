@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Content;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Uid\Uuid;
 
 class Slug
 {

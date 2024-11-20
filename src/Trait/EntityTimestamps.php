@@ -10,11 +10,11 @@ trait EntityTimestamps
 {
     #[ORM\Column(type: 'datetime')]
     #[ApiProperty(readable: true, writable: false)]
-    public \DateTime $createdAt;
+    public ?\DateTime $createdAt = null;
 
     #[ORM\Column(type: 'datetime')]
     #[ApiProperty(readable: true, writable: false)]
-    public \DateTime $updatedAt;
+    public ?\DateTime $updatedAt = null;
 
     #[ORM\PrePersist]
     public function onPrePersist(): void

@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\ApiProcessor\CreateContentProcessor;
+use App\ApiProcessor\UpdateContentProcessor;
 use App\ApiResource\CreateContent;
 use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
@@ -20,13 +21,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource]
-#[Get]
 #[GetCollection]
-#[Put]
-#[Delete]
-#[ORM\HasLifecycleCallbacks]
-#[Post(security: 'is_granted("ROLE_ADMIN")', processor: CreateContentProcessor::class)]
+#[Get(uriVariables: 'slug')]
+#[Delete(uriVariables: 'slug')]
+#[Post(uriVariables: 'slug', security: 'is_granted("ROLE_ADMIN")', processor: CreateContentProcessor::class)]
+#[Put(
+    uriVariables: 'slug',
+    security: 'is_granted("ROLE_ADMIN") and object.author == user',
+    processor: UpdateContentProcessor::class)
+]
 #[ORM\UniqueConstraint(name: 'UNIQ_SLUG', fields: ['slug'])]
+#[ORM\HasLifecycleCallbacks]
 class Content
 {
     use EntityTimestamps, Uuid;
@@ -42,17 +47,17 @@ class Content
     public ?string $content;
 
     #[ORM\Column(type: 'text')]
-    public ?string $slug;
+    public ?string $slug = null;
 
     // thumbnail, tags with relationships, author with relationships, meta tags with relationships
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
     #[Assert\Length(min: 1)]
-    public ?string $thumbnail;
+    public ?string $thumbnail = null;
 
     #[ORM\ManyToMany(targetEntity: Tag::class)]
     #[ApiProperty]
-    public Collection $tags;
+    public ?Collection $tags = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -60,18 +65,19 @@ class Content
     public ?User $author = null;
 
     #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'content')]
-    private Collection $meta;
+    private ?Collection $meta = null;
 
     /**
      * @var Collection<int, Comment>
      */
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'content', orphanRemoval: true)]
-    private Collection $comments;
+    private ?Collection $comments = null;
 
     public function __construct()
     {
         $this->meta = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function addTag(Tag $tag): static
