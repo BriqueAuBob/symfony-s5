@@ -10,11 +10,13 @@ use App\ApiResource\CreateUser;
 use App\Repository\UserRepository;
 use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
+use App\Validator\UnregisteredEmail;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Attribute\Ignore;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -29,13 +31,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     use EntityTimestamps, Uuid;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 180)]
+    #[Assert\Email]
+    #[UnregisteredEmail]
     public ?string $email = null;
 
     #[ORM\Column]
     public array $roles = [];
 
     #[ORM\Column]
-    #[Ignore]
+    #[Assert\NotBlank]
+    #[Assert\NotNull]
     public ?string $password = null;
 
     /**

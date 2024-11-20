@@ -2,27 +2,31 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use App\Trait\EntityTimestamps;
-use App\Trait\Uuid;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use ApiPlatform\Metadata\Delete;
+use App\ApiProcessor\CreateContentProcessor;
+use App\ApiResource\CreateContent;
+use App\Trait\EntityTimestamps;
+use App\Trait\Uuid;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource]
 #[Get]
 #[GetCollection]
-#[Post]
 #[Put]
 #[Delete]
 #[ORM\HasLifecycleCallbacks]
+#[Post(processor: CreateContentProcessor::class)]
+#[ORM\UniqueConstraint(name: 'UNIQ_SLUG', fields: ['slug'])]
 class Content
 {
     use EntityTimestamps, Uuid;
@@ -33,6 +37,8 @@ class Content
     public ?string $title;
 
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1)]
     public ?string $content;
 
     #[ORM\Column(type: 'text')]
@@ -47,6 +53,7 @@ class Content
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[ApiProperty(writable: false)]
     public ?User $author = null;
 
     #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'content')]
