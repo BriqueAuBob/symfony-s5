@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -32,6 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 ]
 #[ORM\UniqueConstraint(name: 'UNIQ_SLUG', fields: ['slug'])]
 #[ORM\HasLifecycleCallbacks]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial'])]
 class Content
 {
     use EntityTimestamps, Uuid;
