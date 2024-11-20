@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Table(name: 'uploads')]
 #[Get]
 #[Post(controller: UploadAction::class, deserialize: false)]
+#[ORM\HasLifecycleCallbacks]
 class Upload
 {
     use Uuid, EntityTimestamps;

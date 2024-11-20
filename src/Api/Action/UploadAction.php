@@ -29,8 +29,6 @@ class UploadAction
 
         $upload = new Upload();
         $upload->path = "/medias/{$path}";
-        $upload->createdAt = new \DateTime();
-        $upload->updatedAt = new \DateTime();
 
         return $upload;
     }
