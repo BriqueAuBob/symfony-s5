@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -24,9 +26,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource]
-#[GetCollection]
-#[Get]
+#[GetCollection(security: 'is_granted("ROLE_ADMIN")')]
+#[Get(security: 'is_granted("ROLE_ADMIN") or object === user')]
 #[Post(input: CreateUser::class, processor: CreateUserProcessor::class)]
+#[ApiFilter(SearchFilter::class, properties: ['email' => ''])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use EntityTimestamps, Uuid;

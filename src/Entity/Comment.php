@@ -22,10 +22,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ApiResource]
+#[ApiResource(
+    operations: [new GetCollection()]
+)]
 #[ApiResource(
     uriTemplate: '/contents/{slug}/comments/{id}',
-    operations: [new Get(), new Delete()],
+    operations: [new Get(), new Delete(
+        security: 'is_granted("ROLE_ADMIN") or object.author === user',
+    )],
     uriVariables: [
         'slug' => new Link(
             fromProperty: 'comments',
@@ -51,7 +55,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: [CommentSerializer::class],
     processor: CreateCommentProcessor::class,
 )]
-#[ApiResource]
 class Comment
 {
     use EntityTimestamps, Uuid;
