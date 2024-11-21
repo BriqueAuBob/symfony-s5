@@ -2,6 +2,7 @@ api_platform:
     title: Hello API Platform
     version: 1.0.0
     use_symfony_listeners: true
+    enable_link_security: true
     defaults:
         stateless: true
         cache_headers:

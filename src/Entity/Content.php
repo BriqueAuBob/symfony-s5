@@ -82,7 +82,7 @@ class Content
      * @var Collection<int, Comment>
      */
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'content', orphanRemoval: true)]
-    #[Groups(['comment:read'])]
+    #[Groups(['comment:read', 'content:read'])]
     private ?Collection $comments = null;
 
     public function __construct()

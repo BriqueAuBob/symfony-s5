@@ -9,4 +9,5 @@
 /vendor/
 .idea/
 /public/medias
+/tools/*/vendor
 ###< symfony/framework-bundle ###

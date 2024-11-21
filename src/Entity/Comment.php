@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
+use App\Api\Processor\CreateCommentProcessor;
 use App\Repository\CommentRepository;
 use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
@@ -19,35 +20,33 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ApiResource]
 #[ApiResource(
     uriTemplate: '/contents/{slug}/comments/{id}',
-    operations: [new Get(), new Post(), new Delete()],
+    operations: [new Get(), new Delete()],
     uriVariables: [
         'slug' => new Link(
-            fromProperty: 'content',
-            toProperty: 'slug',
-            fromClass: Content::class,
-            description: 'The slug of the content',
-        ),
-        'id' => new Link(
-            fromClass: Comment::class,
-            description: 'The id of the comment',
-        ),
-    ],
-    normalizationContext: ['groups' => ['comment:read']]
-)]
-#[GetCollection(
-    uriTemplate: '/contents/{slug}/comments',
-    uriVariables: [
-        'slug' => new Link(
-            fromProperty: 'slug',
+            fromProperty: 'comments',
             toProperty: 'content',
             fromClass: Content::class,
             description: 'The slug of the content',
         ),
     ],
-    normalizationContext: ['groups' => ['comment:read']]
 )]
+#[ApiResource(
+    uriTemplate: '/contents/{slug}/comments',
+    operations: [new GetCollection(), new Post()],
+    uriVariables: [
+        'slug' => new Link(
+            fromProperty: 'comments',
+            toProperty: 'content',
+            fromClass: Content::class,
+            description: 'The slug of the content',
+        ),
+    ],
+    processor: CreateCommentProcessor::class,
+)]
+#[ApiResource]
 class Comment
 {
     use EntityTimestamps, Uuid;
