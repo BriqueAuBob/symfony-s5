@@ -36,7 +36,7 @@ final readonly class CreateCommentProcessor implements ProcessorInterface
         $data->author = $this->security->getUser();
         $content = $this->em->getRepository(Content::class)->findOneBy(['slug' => $slug]);
 
-        if($data->content === null) {
+        if($content === null) {
             throw new \Exception('Content not found');
         }
 

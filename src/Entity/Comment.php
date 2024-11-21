@@ -9,6 +9,8 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use App\Api\Processor\CreateCommentProcessor;
+use App\Api\Provider\CommentProvider;
+use App\Api\Serializer\CommentSerializer;
 use App\Repository\CommentRepository;
 use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
@@ -31,7 +33,9 @@ use Symfony\Component\Validator\Constraints as Assert;
             fromClass: Content::class,
             description: 'The slug of the content',
         ),
+        'id'
     ],
+    normalizationContext: [CommentSerializer::class],
 )]
 #[ApiResource(
     uriTemplate: '/contents/{slug}/comments',
@@ -44,6 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             description: 'The slug of the content',
         ),
     ],
+    normalizationContext: [CommentSerializer::class],
     processor: CreateCommentProcessor::class,
 )]
 #[ApiResource]
@@ -58,6 +63,7 @@ class Comment
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Ignore]
     public ?Content $content = null;
 
     #[ORM\Column(length: 255)]
