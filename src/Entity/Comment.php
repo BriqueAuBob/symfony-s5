@@ -44,7 +44,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/contents/{slug}/comments',
-    operations: [new GetCollection(), new Post(provider: CreateCommentProvider::class)],
+    operations: [new GetCollection(), new Post(security: 'is_granted("ROLE_USER")', provider: CreateCommentProvider::class)],
     uriVariables: [
         'slug' => new Link(
             fromProperty: 'comments',

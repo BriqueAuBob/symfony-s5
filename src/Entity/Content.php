@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Api\Filter\UuidFilter;
 use App\Api\Processor\CreateContentProcessor;
 use App\Api\Processor\UpdateContentProcessor;
 use App\Trait\EntityTimestamps;
@@ -38,6 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\UniqueConstraint(name: 'UNIQ_SLUG', fields: ['slug'])]
 #[ORM\HasLifecycleCallbacks]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'partial'])]
+#[ApiFilter(UuidFilter::class, properties: ['author' => 'exact'])]
 class Content
 {
     use EntityTimestamps, UuidUnidentifier;
