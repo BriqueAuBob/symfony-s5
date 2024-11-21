@@ -8,7 +8,9 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Api\Processor\CreateCommentProcessor;
+use App\Api\Processor\UpdateCommentProcessor;
 use App\Api\Provider\CommentProvider;
 use App\Api\Provider\CreateCommentProvider;
 use App\Api\Serializer\CommentSerializer;
@@ -28,9 +30,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/contents/{slug}/comments/{id}',
-    operations: [new Get(), new Delete(
-        security: 'is_granted("ROLE_ADMIN") or object.author === user',
-    )],
+    operations: [
+        new Get(),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN") or object.author === user',
+        ),
+        new Put(
+            security: 'object.author === user',
+            processor: UpdateCommentProcessor::class
+        ),
+    ],
     uriVariables: [
         'slug' => new Link(
             fromProperty: 'comments',
@@ -44,7 +53,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/contents/{slug}/comments',
-    operations: [new GetCollection(), new Post(security: 'is_granted("ROLE_USER")', provider: CreateCommentProvider::class)],
+    operations: [
+        new GetCollection(),
+        new Post(
+            security: 'is_granted("ROLE_USER")',
+            provider: CreateCommentProvider::class
+        )
+    ],
     uriVariables: [
         'slug' => new Link(
             fromProperty: 'comments',
@@ -63,6 +78,7 @@ class Comment
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['comment:read'])]
+    #[ApiProperty(writable: false)]
     public ?User $author = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
