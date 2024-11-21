@@ -7,15 +7,15 @@
 1. Clone project
 2. Run `docker-compose up -d`
 3. Run
-   # Pour Mac
+   # For Mac
     ```bash
     docker cp $(docker compose ps -q php):/data/caddy/pki/authorities/local/root.crt /tmp/root.crt && sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain /tmp/root.crt
     ```
-   # Pour Linux
+   # For Linux
     ```bash
     $ docker cp $(docker compose ps -q php):/data/caddy/pki/authorities/local/root.crt /usr/local/share/ca-certificates/root.crt && sudo update-ca-certificates
     ```
-   # Pour Windows
+   # For Windows
     ```bash
     $ docker compose cp php:/data/caddy/pki/authorities/local/root.crt %TEMP%/root.crt && certutil -addstore -f "ROOT" %TEMP%/root.crt
     ```
