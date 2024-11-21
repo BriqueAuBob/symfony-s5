@@ -22,7 +22,7 @@
 4. Run `docker exec -ti $(docker-compose ps -q php) /bin/bash`
 5. Run `composer install`
 6. Run `php bin/console doctrine:migrations:migrate`
-7. Go to `https://localhost`
+7. Go to [https://localhost](https://localhost)
 
 ### Documentation
-Docs are available at `https://localhost/api/docs`
+Documentation is available [here](https://localhost/api/docs)
