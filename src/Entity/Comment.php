@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use App\Api\Processor\CreateCommentProcessor;
 use App\Api\Provider\CommentProvider;
+use App\Api\Provider\CreateCommentProvider;
 use App\Api\Serializer\CommentSerializer;
 use App\Repository\CommentRepository;
 use App\Trait\EntityTimestamps;
@@ -43,7 +44,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/contents/{slug}/comments',
-    operations: [new GetCollection(), new Post()],
+    operations: [new GetCollection(), new Post(provider: CreateCommentProvider::class)],
     uriVariables: [
         'slug' => new Link(
             fromProperty: 'comments',

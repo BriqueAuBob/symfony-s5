@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
-#[ApiResource(normalizationContext: ['groups' => ['content:read']])]
+#[ApiResource(normalizationContext: ['groups' => ['content:read', 'metas:read']])]
 #[GetCollection]
 #[Get(uriVariables: 'slug')]
 #[Delete(uriVariables: 'slug')]
@@ -55,7 +55,7 @@ class Content
 
     #[ORM\Column(type: 'text')]
     #[ApiProperty(identifier: true)]
-    #[Groups(['content:read'])]
+    #[Groups(['content:read', 'metas:read'])]
     public ?string $slug = null;
 
     #[ORM\OneToOne(targetEntity: Upload::class)]
@@ -76,7 +76,7 @@ class Content
 
     #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'content', orphanRemoval: true)]
     #[Groups(['content:read'])]
-    private ?Collection $meta = null;
+    private ?Collection $metas = null;
 
     /**
      * @var Collection<int, Comment>
@@ -87,7 +87,7 @@ class Content
 
     public function __construct()
     {
-        $this->meta = new ArrayCollection();
+        $this->metas = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->tags = new ArrayCollection();
     }
@@ -110,8 +110,8 @@ class Content
 
     public function addMeta(Meta $meta): static
     {
-        if (!$this->meta->contains($meta)) {
-            $this->meta->add($meta);
+        if (!$this->metas->contains($meta)) {
+            $this->metas->add($meta);
             $meta->content = $this;
         }
 
@@ -120,7 +120,7 @@ class Content
 
     public function removeMeta(Meta $metum): static
     {
-        if ($this->meta->removeElement($metum)) {
+        if ($this->metas->removeElement($metum)) {
             // set the owning side to null (unless already changed)
             if ($metum->content === $this) {
                 $metum->content = null;
