@@ -3,6 +3,7 @@
 namespace App\Api\Action;
 
 use App\Entity\Content;
+use App\Entity\Meta;
 use App\Entity\Upload;
 use App\Service\FileUpload;
 use App\Service\CsvParserService;
@@ -50,6 +51,15 @@ class ImportAction
             $content->content = $item['content'];
             $content->thumbnail = $upload;
             $content->slug = $this->slugService->get($item['title']);
+
+            foreach(['title', 'description'] as $metaTag) {
+                $meta = new Meta();
+                $meta->name = $metaTag;
+                $meta->value = $item['meta_'.$metaTag];
+                $content->addMeta($meta);
+
+                $this->em->persist($meta);
+            }
 
             $content->author = $this->security->getUser();
 

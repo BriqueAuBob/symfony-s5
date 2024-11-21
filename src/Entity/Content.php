@@ -9,12 +9,14 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Api\Processor\CreateContentProcessor;
 use App\Api\Processor\UpdateContentProcessor;
 use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
+use App\Trait\UuidUnidentifier;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,14 +32,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Put(
     uriVariables: 'slug',
     security: 'is_granted("ROLE_ADMIN") and object.author == user',
-    processor: UpdateContentProcessor::class)
-]
+    processor: UpdateContentProcessor::class
+)]
 #[ORM\UniqueConstraint(name: 'UNIQ_SLUG', fields: ['slug'])]
 #[ORM\HasLifecycleCallbacks]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'partial'])]
 class Content
 {
-    use EntityTimestamps, Uuid;
+    use EntityTimestamps, UuidUnidentifier;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
@@ -52,6 +54,7 @@ class Content
     public ?string $content;
 
     #[ORM\Column(type: 'text')]
+    #[ApiProperty(identifier: true)]
     #[Groups(['content:read'])]
     public ?string $slug = null;
 
@@ -71,7 +74,7 @@ class Content
     #[Groups(['content:read'])]
     public ?User $author = null;
 
-    #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'content')]
+    #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'content', orphanRemoval: true)]
     #[Groups(['content:read'])]
     private ?Collection $meta = null;
 
@@ -79,7 +82,7 @@ class Content
      * @var Collection<int, Comment>
      */
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'content', orphanRemoval: true)]
-    #[Groups(['content:read'])]
+    #[Groups(['comment:read'])]
     private ?Collection $comments = null;
 
     public function __construct()
@@ -109,7 +112,7 @@ class Content
     {
         if (!$this->meta->contains($meta)) {
             $this->meta->add($meta);
-            $meta->setContent($this);
+            $meta->content = $this;
         }
 
         return $this;
@@ -119,8 +122,8 @@ class Content
     {
         if ($this->meta->removeElement($metum)) {
             // set the owning side to null (unless already changed)
-            if ($metum->getContent() === $this) {
-                $metum->setContent(null);
+            if ($metum->content === $this) {
+                $metum->content = null;
             }
         }
 
@@ -139,7 +142,7 @@ class Content
     {
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
-            $comment->setContent($this);
+            $comment->content = $this;
         }
 
         return $this;
@@ -149,8 +152,8 @@ class Content
     {
         if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($comment->getContent() === $this) {
-                $comment->setContent(null);
+            if ($comment->content === $this) {
+                $comment->content = null;
             }
         }
 

@@ -29,5 +29,6 @@ class Meta
     public ?string $value = null;
 
     #[ORM\ManyToOne(inversedBy: 'meta')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     public ?Content $content = null;
 }
