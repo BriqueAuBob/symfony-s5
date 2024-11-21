@@ -21,12 +21,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource(normalizationContext: ['groups' => ['content:read', 'metas:read']])]
 #[GetCollection]
-#[Get(uriVariables: 'slug')]
+#[Get(uriVariables: 'slug', normalizationContext: ['groups' => ['content:read', 'metas:read', 'content:all']])]
 #[Delete(uriVariables: 'slug')]
 #[Post(uriVariables: 'slug', security: 'is_granted("ROLE_ADMIN")', processor: CreateContentProcessor::class)]
 #[Put(
@@ -50,7 +51,7 @@ class Content
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
     #[Assert\Length(min: 1)]
-    #[Groups(['content:read'])]
+    #[Groups(['content:all'])]
     public ?string $content;
 
     #[ORM\Column(type: 'text')]
@@ -83,6 +84,7 @@ class Content
      */
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'content', orphanRemoval: true)]
     #[Groups(['comment:read', 'content:read'])]
+    #[Ignore]
     private ?Collection $comments = null;
 
     public function __construct()
