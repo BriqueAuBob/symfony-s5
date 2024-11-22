@@ -27,6 +27,7 @@
 ### Documentation
 Documentation is available [here](https://localhost/api/docs)
 
+-----
 ### Useful commands
 #### Docker
 - `docker-compose up -d` to start the project
@@ -38,5 +39,6 @@ Documentation is available [here](https://localhost/api/docs)
 - `php bin/console app:security:grant-user {email}` to changes roles of a user
 - `php bin/console app:content:delete` to delete all content
 
+-----
 ### Credits
 - [Brandon Clément](https://bclement.fr)
