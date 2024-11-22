@@ -27,7 +27,7 @@ final readonly class UpdateContentProcessor implements ProcessorInterface
     ): Content {
         $oldSlug = $context['previous_data']->slug ?? null;
 
-        if(null === $oldSlug) {
+        if (null === $oldSlug) {
             throw new Exception('Slug not found');
         }
 

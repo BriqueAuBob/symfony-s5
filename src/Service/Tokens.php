@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use DateTime;
+use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Throwable;
 use const FILTER_VALIDATE_EMAIL;
@@ -23,7 +24,7 @@ final readonly class Tokens
         ]);
 
         if (false === $encoded) {
-            throw new \RuntimeException('Failed to encode token');
+            throw new RuntimeException('Failed to encode token');
         }
 
         $jsonEncoded = json_encode([
@@ -32,7 +33,7 @@ final readonly class Tokens
         ]);
 
         if (false === $jsonEncoded) {
-            throw new \RuntimeException('Failed to encode token');
+            throw new RuntimeException('Failed to encode token');
         }
 
         return base64_encode($jsonEncoded);

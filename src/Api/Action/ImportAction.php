@@ -5,7 +5,6 @@ namespace App\Api\Action;
 use App\Entity\Content;
 use App\Entity\Meta;
 use App\Entity\Upload;
-use App\Entity\User;
 use App\Service\CsvParserService;
 use App\Service\FileUpload;
 use App\Service\Slug;
@@ -27,7 +26,6 @@ class ImportAction
     }
 
     /**
-     * @param Request $request
      * @return Content[]
      */
     public function __invoke(Request $request): array

@@ -25,7 +25,7 @@ class CsvParserService
     public function getData(): array
     {
         $file = file($this->file->getPathname());
-        if(false === $file) {
+        if (false === $file) {
             throw new BadRequestHttpException('File not found');
         }
         $csv = array_map('str_getcsv', $file);
