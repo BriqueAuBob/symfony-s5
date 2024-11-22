@@ -39,6 +39,7 @@ final readonly class UpdateContentProcessor implements ProcessorInterface
         $content->title = $data->title;
         $content->content = $data->content;
         $content->thumbnail = $data->thumbnail;
+        $content->tags = $data->tags;
 
         $this->em->flush();
 
