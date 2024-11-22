@@ -39,14 +39,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     use EntityTimestamps;
     use Uuid;
 
-    #[Orm\Column(length: 30, options: ['default' => 'John'])]
+    #[ORM\Column(length: 30, options: ['default' => 'John'])]
     #[Assert\NotNull]
     #[Assert\NotBlank]
     #[Assert\Length(min: 1, max: 30)]
     #[Groups(['content:read'])]
     public ?string $firstName = null;
-
-    #[Orm\Column(length: 30, options: ['default' => 'Doe'])]
+    #[ORM\Column(length: 30, options: ['default' => 'Doe'])]
     #[Assert\NotNull]
     #[Assert\NotBlank]
     #[Assert\Length(min: 1, max: 30)]
