@@ -2,6 +2,23 @@
 
 ## CMS Headless Symfony
 
+### Description
+This project is a CMS Headless made with Symfony 7.1. It uses the API Platform bundle to create a REST API. The project is dockerized with Caddy, PHP 8.3, and PostgreSQL.
+
+### Features
+- Authentication with tokens
+- Create, read, update, and delete users
+- Create, read, update, and delete content
+- Create, read, update, and delete comments
+- Create, read, update, and delete tags
+- Upload images
+- Import content from a CSV file
+
+-----
+### Requirements
+- Docker
+- Docker Compose
+
 ### Installation
 
 1. Clone project
