@@ -31,6 +31,8 @@ final readonly class CreateUserProcessor implements ProcessorInterface
         $user->id = UuidV4::v4();
         $user->email = $data->email;
         $user->password = $data->password;
+        $user->firstName = $data->firstName;
+        $user->lastName = $data->lastName;
 
         $this->validator->validate($user);
 

@@ -34,18 +34,24 @@ class CreateUserCommand extends Command
             ->setDescription('Creates a new user.')
             ->setHelp('This command allows you to create a user...')
             ->addArgument('email', InputArgument::REQUIRED, 'User email')
-            ->addArgument('password', InputArgument::REQUIRED, 'User password');
+            ->addArgument('password', InputArgument::REQUIRED, 'User password')
+            ->addOption('firstName', 'fn', InputArgument::OPTIONAL, 'User first name')
+            ->addOption('lastName', 'ln', InputArgument::OPTIONAL, 'User last name');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $email = $input->getArgument('email');
         $password = $input->getArgument('password');
+        $firstName = $input->getOption('firstName');
+        $lastName = $input->getOption('lastName');
 
         $user = new User();
         $user->id = UuidV4::v4();
         $user->email = $email;
         $user->password = $this->passwordHasher->hashPassword($user, $password);
+        $user->firstName = $firstName;
+        $user->lastName = $lastName;
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

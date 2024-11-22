@@ -24,12 +24,12 @@ class LoginController extends AbstractController
 
         return $this->json(['token' => $this->tokenService->generateTokenForUser(
             $user->getUserIdentifier()
-        ), 'user' => $user->getUserIdentifier()]);
+        ), 'user' => $user]);
     }
 
     #[Route('/api/user', name: 'api_test', methods: ['GET'])]
     public function test(#[CurrentUser] User $user): Response
     {
-        return $this->json(['user' => $user->getUserIdentifier()]);
+        return $this->json(['user' => $user]);
     }
 }

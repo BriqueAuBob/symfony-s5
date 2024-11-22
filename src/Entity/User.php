@@ -5,9 +5,11 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Api\Processor\CreateUserProcessor;
 use App\Api\Resource\CreateUser;
 use App\Repository\UserRepository;
@@ -29,11 +31,27 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[GetCollection(security: 'is_granted("ROLE_ADMIN")')]
 #[Get(security: 'is_granted("ROLE_ADMIN") or object === user')]
 #[Post(input: CreateUser::class, processor: CreateUserProcessor::class)]
+#[Put(security: 'is_granted("ROLE_ADMIN") or object === user')]
+#[Delete(security: 'is_granted("ROLE_ADMIN") or object === user')]
 #[ApiFilter(SearchFilter::class, properties: ['email' => ''])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use EntityTimestamps;
     use Uuid;
+
+    #[Orm\Column(length: 30, options: ['default' => 'John'])]
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 30)]
+    #[Groups(['content:read'])]
+    public ?string $firstName = null;
+
+    #[Orm\Column(length: 30, options: ['default' => 'Doe'])]
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 30)]
+    #[Groups(['content:read'])]
+    public ?string $lastName = null;
 
     #[ORM\Column(length: 180)]
     #[Assert\NotNull]
@@ -42,6 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Email]
     #[UnregisteredEmail]
     #[Groups(['content:read'])]
+    #[Ignore]
     public ?string $email = null;
 
     /**

@@ -9,6 +9,16 @@ class CreateUser
 {
     #[Assert\NotNull]
     #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 30)]
+    public ?string $firstName = null;
+
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 30)]
+    public ?string $lastName = null;
+
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
     #[Assert\Length(min: 1, max: 180)]
     #[Assert\Email]
     #[UnregisteredEmail]
