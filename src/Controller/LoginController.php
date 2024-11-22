@@ -30,6 +30,6 @@ class LoginController extends AbstractController
     #[Route('/api/user', name: 'api_test', methods: ['GET'])]
     public function test(#[CurrentUser] User $user): Response
     {
-        return $this->json(['user' => $user?->getUserIdentifier()]);
+        return $this->json(['user' => $user->getUserIdentifier()]);
     }
 }

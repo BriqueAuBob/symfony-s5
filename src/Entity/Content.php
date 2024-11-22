@@ -19,6 +19,7 @@ use App\Trait\UuidUnidentifier;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -70,11 +71,11 @@ class Content
     #[Groups(['content:read'])]
     public ?Collection $tags = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
     #[ApiProperty(writable: false)]
     #[Groups(['content:read'])]
-    public ?User $author = null;
+    public User|UserInterface|null $author = null;
 
     #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'content', orphanRemoval: true)]
     #[Groups(['content:read'])]

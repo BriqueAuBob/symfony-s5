@@ -19,9 +19,16 @@ class CsvParserService
         }
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getData(): array
     {
-        $csv = array_map('str_getcsv', file($this->file->getPathname()));
+        $file = file($this->file->getPathname());
+        if(false === $file) {
+            throw new BadRequestHttpException('File not found');
+        }
+        $csv = array_map('str_getcsv', $file);
         $header = array_shift($csv);
         $data = [];
         foreach ($csv as $row) {

@@ -44,6 +44,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['content:read'])]
     public ?string $email = null;
 
+    /**
+     * @var string[]
+     */
     #[ORM\Column]
     public array $roles = [];
 
@@ -66,7 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      *
-     * @return list<string>
+     * @return string[]
      */
     public function getRoles(): array
     {

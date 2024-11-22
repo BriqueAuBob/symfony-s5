@@ -4,19 +4,16 @@ namespace App\Api\Processor;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use ApiPlatform\Validator\ValidatorInterface;
 use App\Entity\Meta;
 use App\Service\Slug;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
+use Exception;
 
 final readonly class CreateMetaProcessor implements ProcessorInterface
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private ValidatorInterface $validator,
         private Slug $slugService,
-        private Security $security,
     ) {
     }
 
@@ -28,11 +25,16 @@ final readonly class CreateMetaProcessor implements ProcessorInterface
         array $context = [],
     ): Meta {
         $slug = $uriVariables['slug'];
+        $content = $this->slugService->getEntityWithSlug($slug);
+
+        if (null === $content) {
+            throw new Exception('Content not found');
+        }
 
         $meta = new Meta();
         $meta->name = $data->name;
         $meta->value = $data->value;
-        $meta->content = $this->slugService->getEntityWithSlug($slug);
+        $meta->content = $content;
 
         $this->em->persist($meta);
         $this->em->flush();

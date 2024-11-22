@@ -16,7 +16,7 @@ class Slug
         return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $string)));
     }
 
-    public function getEntityWithSlug(string $slug): ?object
+    public function getEntityWithSlug(string $slug): ?Content
     {
         return $this->entityManager->getRepository(Content::class)->findOneBy(['slug' => $slug]);
     }

@@ -1,0 +1,12 @@
+parameters:
+    level: 7
+    paths:
+        - bin/
+        - config/
+        - public/
+        - src/
+    ignoreErrors:
+        - identifier: missingType.generics
+        - message: '#has invalid type Illuminate#'
+        - message: '#undefined method ApiPlatform\\Metadata\\Operation#'
+

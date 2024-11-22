@@ -36,7 +36,6 @@ class FileUpload
         return match (true) {
             $file instanceof UploadedFile => strtolower(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)),
             $file instanceof File => strtolower(pathinfo($file->getFilename(), PATHINFO_FILENAME)) . '.png',
-            default => throw new BadRequestHttpException('Invalid file type'),
         };
     }
 

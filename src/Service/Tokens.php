@@ -22,10 +22,20 @@ final readonly class Tokens
             'expire' => $expire->getTimestamp(),
         ]);
 
-        return base64_encode(json_encode([
+        if (false === $encoded) {
+            throw new \RuntimeException('Failed to encode token');
+        }
+
+        $jsonEncoded = json_encode([
             $encoded,
             $this->sign($encoded),
-        ]));
+        ]);
+
+        if (false === $jsonEncoded) {
+            throw new \RuntimeException('Failed to encode token');
+        }
+
+        return base64_encode($jsonEncoded);
     }
 
     public function decodeUserToken(?string $token): ?string

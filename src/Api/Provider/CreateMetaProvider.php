@@ -22,11 +22,6 @@ final class CreateMetaProvider implements ProviderInterface
 
         $resourceMetadata = $this->resourceMetadataCollectionFactory->create($operation->getMetadata()->getResourceClass());
         $resource = $resourceMetadata->getOperation('post');
-
-        if (null === $resource) {
-            throw new RuntimeException('Resource not found');
-        }
-
         $resource->setUriTemplate('/metas/{id}');
 
         return $resource;

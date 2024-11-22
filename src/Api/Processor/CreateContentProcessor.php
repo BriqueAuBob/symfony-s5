@@ -4,7 +4,6 @@ namespace App\Api\Processor;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use ApiPlatform\Validator\ValidatorInterface;
 use App\Api\Resource\CreateContent;
 use App\Entity\Content;
 use App\Service\Slug;
@@ -15,7 +14,6 @@ final readonly class CreateContentProcessor implements ProcessorInterface
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private ValidatorInterface $validator,
         private Slug $slugService,
         private Security $security,
     ) {
@@ -27,7 +25,7 @@ final readonly class CreateContentProcessor implements ProcessorInterface
         Operation $operation,
         array $uriVariables = [],
         array $context = [],
-    ): Content {
+    ): CreateContent {
         $data->slug = $this->slugService->get($data->title);
         $data->author = $this->security->getUser();
 

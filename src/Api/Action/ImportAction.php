@@ -5,6 +5,7 @@ namespace App\Api\Action;
 use App\Entity\Content;
 use App\Entity\Meta;
 use App\Entity\Upload;
+use App\Entity\User;
 use App\Service\CsvParserService;
 use App\Service\FileUpload;
 use App\Service\Slug;
@@ -25,7 +26,11 @@ class ImportAction
     ) {
     }
 
-    public function __invoke(Request $request)
+    /**
+     * @param Request $request
+     * @return Content[]
+     */
+    public function __invoke(Request $request): array
     {
         $file = $request->files->get('file');
         $parserService = new CsvParserService($file);

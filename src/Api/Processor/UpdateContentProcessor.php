@@ -25,7 +25,12 @@ final readonly class UpdateContentProcessor implements ProcessorInterface
         array $uriVariables = [],
         array $context = [],
     ): Content {
-        $oldSlug = $context['previous_data']->slug;
+        $oldSlug = $context['previous_data']->slug ?? null;
+
+        if(null === $oldSlug) {
+            throw new Exception('Slug not found');
+        }
+
         $content = $this->slugService->getEntityWithSlug($oldSlug);
 
         if (null === $content) {

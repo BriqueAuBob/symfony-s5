@@ -7,6 +7,9 @@ class Role
     public const ROLE_USER = 'ROLE_USER';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
 
+    /**
+     * @return string[]
+     */
     public static function getRoles(): array
     {
         return [

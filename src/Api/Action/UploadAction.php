@@ -15,7 +15,7 @@ class UploadAction
     ) {
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Upload
     {
         $file = $request->files->get('file');
         $path = $this->fileUpload->uploadFile($file);

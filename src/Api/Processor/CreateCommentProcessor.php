@@ -2,7 +2,6 @@
 
 namespace App\Api\Processor;
 
-use ApiPlatform\Metadata\IriConverterInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Entity\Comment;
@@ -17,7 +16,6 @@ final readonly class CreateCommentProcessor implements ProcessorInterface
     public function __construct(
         private EntityManagerInterface $em,
         private Security $security,
-        private IriConverterInterface $iriConverter,
     ) {
     }
 

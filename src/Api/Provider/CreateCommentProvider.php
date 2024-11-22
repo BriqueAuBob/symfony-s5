@@ -22,11 +22,6 @@ final class CreateCommentProvider implements ProviderInterface
 
         $resourceMetadata = $this->resourceMetadataCollectionFactory->create($operation->getMetadata()->getResourceClass());
         $resource = $resourceMetadata->getOperation('post');
-
-        if (null === $resource) {
-            throw new RuntimeException('Resource not found');
-        }
-
         $resource->setUriTemplate('/comments/{id}');
 
         return $resource;
