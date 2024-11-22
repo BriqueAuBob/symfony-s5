@@ -1,8 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -11,14 +12,12 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Api\Processor\CreateCommentProcessor;
 use App\Api\Processor\UpdateCommentProcessor;
-use App\Api\Provider\CommentProvider;
 use App\Api\Provider\CreateCommentProvider;
 use App\Api\Serializer\CommentSerializer;
 use App\Repository\CommentRepository;
 use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -47,7 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             fromClass: Content::class,
             description: 'The slug of the content',
         ),
-        'id'
+        'id',
     ],
     normalizationContext: [CommentSerializer::class],
 )]
@@ -58,7 +57,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Post(
             security: 'is_granted("ROLE_USER")',
             provider: CreateCommentProvider::class
-        )
+        ),
     ],
     uriVariables: [
         'slug' => new Link(
@@ -73,7 +72,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class Comment
 {
-    use EntityTimestamps, Uuid;
+    use EntityTimestamps;
+    use Uuid;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]

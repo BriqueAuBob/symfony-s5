@@ -1,12 +1,9 @@
-<?php
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 
 namespace App\Api\Serializer;
 
 use App\Entity\Comment;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CommentSerializer implements NormalizerInterface

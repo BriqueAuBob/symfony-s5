@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -32,7 +32,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(SearchFilter::class, properties: ['email' => ''])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    use EntityTimestamps, Uuid;
+    use EntityTimestamps;
+    use Uuid;
 
     #[ORM\Column(length: 180)]
     #[Assert\NotNull]
@@ -59,7 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**

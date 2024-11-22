@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service;
 
 use App\Entity\Content;
-use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Uid\Uuid;
 
 class Slug
 {
@@ -30,12 +28,14 @@ class Slug
         while ($this->getEntityWithSlug($slug)) {
             $slug = $originalSlug . '-' . $i++;
         }
+
         return $slug;
     }
 
     public function get(string $title): string
     {
         $slug = $this->generate($title);
+
         return $this->getUniqueSlug($slug);
     }
 }

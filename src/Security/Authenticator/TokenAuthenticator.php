@@ -39,7 +39,6 @@ final class TokenAuthenticator extends AbstractAuthenticator
 
             return null;
         }));
-
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response

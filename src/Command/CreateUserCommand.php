@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Command;
 
@@ -10,9 +10,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Uid\UuidV4;
 
 #[AsCommand(
@@ -25,7 +23,7 @@ class CreateUserCommand extends Command
     public function __construct(
         protected UserRepository $userRepository,
         protected EntityManagerInterface $entityManager,
-        protected UserPasswordHasherInterface $passwordHasher
+        protected UserPasswordHasherInterface $passwordHasher,
     ) {
         parent::__construct();
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Command;
 
@@ -9,7 +9,6 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -20,9 +19,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class GrantUserCommand extends Command
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
-    )
-    {
+        private EntityManagerInterface $entityManager,
+    ) {
         parent::__construct();
     }
 
@@ -39,6 +37,7 @@ class GrantUserCommand extends Command
 
         if (!$email) {
             $io->error('Please provide an email address.');
+
             return Command::FAILURE;
         }
 
@@ -46,6 +45,7 @@ class GrantUserCommand extends Command
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
         if (!$user) {
             $io->error('User with email: ' . $email . ' not found.');
+
             return Command::FAILURE;
         }
 

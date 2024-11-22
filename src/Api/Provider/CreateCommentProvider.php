@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Api\Provider;
 
@@ -16,16 +14,16 @@ final class CreateCommentProvider implements ProviderInterface
     ) {
     }
 
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|null
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?object
     {
-        if ($operation->getUriTemplate() !== '/comments') {
+        if ('/comments' !== $operation->getUriTemplate()) {
             return null;
         }
 
         $resourceMetadata = $this->resourceMetadataCollectionFactory->create($operation->getMetadata()->getResourceClass());
         $resource = $resourceMetadata->getOperation('post');
 
-        if ($resource === null) {
+        if (null === $resource) {
             throw new RuntimeException('Resource not found');
         }
 

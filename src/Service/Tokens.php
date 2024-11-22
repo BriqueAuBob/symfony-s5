@@ -2,7 +2,10 @@
 
 namespace App\Service;
 
+use DateTime;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Throwable;
+use const FILTER_VALIDATE_EMAIL;
 
 final readonly class Tokens
 {
@@ -12,7 +15,7 @@ final readonly class Tokens
     ) {
     }
 
-    public function generateTokenForUser(string $email, \DateTime $expire = new \DateTime('+4 hours')): string
+    public function generateTokenForUser(string $email, DateTime $expire = new DateTime('+4 hours')): string
     {
         $encoded = json_encode([
             'email' => $email,
@@ -21,7 +24,7 @@ final readonly class Tokens
 
         return base64_encode(json_encode([
             $encoded,
-            $this->sign($encoded)
+            $this->sign($encoded),
         ]));
     }
 
@@ -45,13 +48,13 @@ final readonly class Tokens
             }
 
             return null;
-        } catch (\Throwable) {
+        } catch (Throwable) {
             return null;
         }
     }
 
     private function sign(string $encoded): string
     {
-        return hash('sha256', $encoded.'/'.$this->secret);
+        return hash('sha256', $encoded . '/' . $this->secret);
     }
 }

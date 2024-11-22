@@ -1,24 +1,20 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
-use App\Api\Provider\CreateMetaProvider;
-use App\Api\Processor\CreateCommentProcessor;
 use App\Api\Processor\CreateMetaProcessor;
-use App\Api\Serializer\CommentSerializer;
+use App\Api\Provider\CreateMetaProvider;
 use App\Repository\MetaRepository;
 use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MetaRepository::class)]
@@ -29,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(),
         new Delete(
             security: 'is_granted("ROLE_ADMIN") && object.content.author === user',
-        )
+        ),
     ],
     uriVariables: [
         'slug' => new Link(
@@ -38,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             fromClass: Content::class,
             description: 'The slug of the content',
         ),
-        'id'
+        'id',
     ],
 )]
 #[ApiResource(
@@ -49,7 +45,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: 'is_granted("ROLE_ADMIN")',
             provider: CreateMetaProvider::class,
             processor: CreateMetaProcessor::class
-        )
+        ),
     ],
     uriVariables: [
         'slug' => new Link(
@@ -62,7 +58,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class Meta
 {
-    use EntityTimestamps, Uuid;
+    use EntityTimestamps;
+    use Uuid;
 
     #[ORM\Column(length: 40)]
     #[Assert\NotBlank()]

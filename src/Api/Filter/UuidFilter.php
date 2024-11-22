@@ -73,7 +73,7 @@ final class UuidFilter extends AbstractFilter
 
         // Vérification de la base de données pour déterminer si c'est PostgreSQL
         $platform = $queryBuilder->getEntityManager()->getConnection()->getDatabasePlatform();
-        $isPostgres = strpos($platform->getName(), 'postgres') !== false;
+        $isPostgres = str_contains($platform->getName(), 'postgres');
 
         $alias = $queryBuilder->getRootAliases()[0];
         $valueParameter = ':' . $queryNameGenerator->generateParameterName($property);

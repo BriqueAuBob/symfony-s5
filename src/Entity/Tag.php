@@ -1,7 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -10,7 +11,6 @@ use ApiPlatform\Metadata\Put;
 use App\Trait\EntityTimestamps;
 use App\Trait\Uuid;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiResource;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -27,7 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity(fields: ['name'])]
 class Tag
 {
-    use EntityTimestamps, Uuid;
+    use EntityTimestamps;
+    use Uuid;
 
     #[ORM\Column(type: 'string', length: 50)]
     #[Assert\NotBlank]

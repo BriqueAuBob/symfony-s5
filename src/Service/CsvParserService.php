@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service;
 
@@ -8,13 +8,13 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class CsvParserService
 {
     public function __construct(
-        private ?UploadedFile $file
+        private ?UploadedFile $file,
     ) {
         if (!$file instanceof UploadedFile) {
             throw new BadRequestHttpException('File not found');
         }
 
-        if ($file->getClientOriginalExtension() !== 'csv') {
+        if ('csv' !== $file->getClientOriginalExtension()) {
             throw new BadRequestHttpException('Invalid file type');
         }
     }
@@ -27,6 +27,7 @@ class CsvParserService
         foreach ($csv as $row) {
             $data[] = array_combine($header, $row);
         }
+
         return $data;
     }
 }

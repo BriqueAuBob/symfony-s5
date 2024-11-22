@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -9,14 +9,12 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Api\Filter\UuidFilter;
 use App\Api\Processor\CreateContentProcessor;
 use App\Api\Processor\UpdateContentProcessor;
 use App\Trait\EntityTimestamps;
-use App\Trait\Uuid;
 use App\Trait\UuidUnidentifier;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -42,7 +40,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(UuidFilter::class, properties: ['author' => 'exact'])]
 class Content
 {
-    use EntityTimestamps, UuidUnidentifier;
+    use EntityTimestamps;
+    use UuidUnidentifier;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]

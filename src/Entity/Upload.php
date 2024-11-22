@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -17,7 +17,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\HasLifecycleCallbacks]
 class Upload
 {
-    use Uuid, EntityTimestamps;
+    use Uuid;
+    use EntityTimestamps;
 
     #[ORM\Column]
     #[Groups(['content:read'])]

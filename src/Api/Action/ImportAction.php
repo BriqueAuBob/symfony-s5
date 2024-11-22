@@ -1,31 +1,29 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Api\Action;
 
 use App\Entity\Content;
 use App\Entity\Meta;
 use App\Entity\Upload;
-use App\Service\FileUpload;
 use App\Service\CsvParserService;
+use App\Service\FileUpload;
 use App\Service\Slug;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Bundle\SecurityBundle\Security;
 
 #[AsController]
 class ImportAction
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly FileUpload             $fileUpload,
-        private readonly Security               $security,
-        private readonly Slug                   $slugService
-    ) {}
+        private readonly FileUpload $fileUpload,
+        private readonly Security $security,
+        private readonly Slug $slugService,
+    ) {
+    }
 
     public function __invoke(Request $request)
     {
@@ -34,7 +32,7 @@ class ImportAction
         $data = $parserService->getData();
 
         $contents = [];
-        foreach($data as $item) {
+        foreach ($data as $item) {
             $thumbnail = file_get_contents($item['cover']);
             $tempFilePath = tempnam(sys_get_temp_dir(), 'thumb');
             file_put_contents($tempFilePath, $thumbnail);
@@ -52,10 +50,10 @@ class ImportAction
             $content->thumbnail = $upload;
             $content->slug = $this->slugService->get($item['title']);
 
-            foreach(['title', 'description'] as $metaTag) {
+            foreach (['title', 'description'] as $metaTag) {
                 $meta = new Meta();
                 $meta->name = $metaTag;
-                $meta->value = $item['meta_'.$metaTag];
+                $meta->value = $item['meta_' . $metaTag];
                 $content->addMeta($meta);
 
                 $this->em->persist($meta);

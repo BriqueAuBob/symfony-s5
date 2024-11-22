@@ -5,12 +5,10 @@ namespace App\Api\Processor;
 use ApiPlatform\Metadata\IriConverterInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use ApiPlatform\Symfony\Routing\IriConverter;
-use ApiPlatform\Validator\ValidatorInterface;
 use App\Entity\Comment;
 use App\Entity\Content;
-use App\Service\Slug;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Uid\UuidV4;
 
@@ -18,8 +16,8 @@ final readonly class CreateCommentProcessor implements ProcessorInterface
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private Security               $security,
-        private IriConverterInterface  $iriConverter
+        private Security $security,
+        private IriConverterInterface $iriConverter,
     ) {
     }
 
@@ -36,8 +34,8 @@ final readonly class CreateCommentProcessor implements ProcessorInterface
         $data->author = $this->security->getUser();
         $content = $this->em->getRepository(Content::class)->findOneBy(['slug' => $slug]);
 
-        if($content === null) {
-            throw new \Exception('Content not found');
+        if (null === $content) {
+            throw new Exception('Content not found');
         }
 
         $data->content = $content;

@@ -8,6 +8,7 @@ use App\Api\Resource\CreateContent;
 use App\Entity\Content;
 use App\Service\Slug;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 final readonly class UpdateContentProcessor implements ProcessorInterface
 {
@@ -27,11 +28,11 @@ final readonly class UpdateContentProcessor implements ProcessorInterface
         $oldSlug = $context['previous_data']->slug;
         $content = $this->slugService->getEntityWithSlug($oldSlug);
 
-        if($content === null) {
-            throw new \Exception('Content not found');
+        if (null === $content) {
+            throw new Exception('Content not found');
         }
 
-        if($content->title === $data->title) {
+        if ($content->title === $data->title) {
             $content->slug = $oldSlug;
         } else {
             $content->slug = $this->slugService->get($data->title);

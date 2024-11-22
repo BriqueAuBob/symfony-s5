@@ -5,12 +5,10 @@ namespace App\Api\Processor;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use ApiPlatform\Validator\ValidatorInterface;
-use App\Api\Resource\CreateMeta;
 use App\Entity\Meta;
 use App\Service\Slug;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Uid\UuidV4;
 
 final readonly class CreateMetaProcessor implements ProcessorInterface
 {
