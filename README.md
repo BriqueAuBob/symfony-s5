@@ -26,3 +26,17 @@
 
 ### Documentation
 Documentation is available [here](https://localhost/api/docs)
+
+### Useful commands
+#### Docker
+- `docker-compose up -d` to start the project
+- `docker-compose down` to stop the project
+- `docker-compose exec $(docker-compose ps -q php) /bin/bash` to access the php container
+- `docker-compose exec $(docker-compose ps -q database) /bin/bash` to access the db container
+#### Symfony
+- `php bin/console app:security:create-user {email} {password}` to create a user
+- `php bin/console app:security:grant-user {email}` to changes roles of a user
+- `php bin/console app:content:delete` to delete all content
+
+### Credits
+- [Brandon Clément](https://bclement.fr)
