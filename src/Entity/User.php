@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Post(input: CreateUser::class, processor: CreateUserProcessor::class)]
 #[Put(security: 'is_granted("ROLE_ADMIN") or object === user')]
 #[Delete(security: 'is_granted("ROLE_ADMIN") or object === user')]
-#[ApiFilter(SearchFilter::class, properties: ['email' => ''])]
+#[ApiFilter(SearchFilter::class, properties: ['email' => 'partial'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use EntityTimestamps;
