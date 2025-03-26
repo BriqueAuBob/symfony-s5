@@ -30,6 +30,8 @@ class CommentSerializer implements NormalizerInterface
         }
 
         $data['author'] = $this->normalizer->normalize($comment->author);
+        $data['content_id'] = $comment->content->id;
+        $data['content_slug'] = $comment->content->slug;
 
         return $data;
     }

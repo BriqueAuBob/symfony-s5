@@ -5,6 +5,7 @@ namespace App\Api\Processor;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Api\Resource\CreateContent;
+use App\Entity\Content;
 use App\Service\Slug;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -24,7 +25,7 @@ final readonly class CreateContentProcessor implements ProcessorInterface
         Operation $operation,
         array $uriVariables = [],
         array $context = [],
-    ): CreateContent {
+    ): Content {
         $data->slug = $this->slugService->get($data->title);
         $data->author = $this->security->getUser();
 
