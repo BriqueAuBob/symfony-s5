@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Api\Processor\CreateMetaProcessor;
 use App\Api\Provider\CreateMetaProvider;
 use App\Repository\MetaRepository;
@@ -23,6 +24,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     uriTemplate: '/contents/{slug}/metas/{id}',
     operations: [
         new Get(),
+        new Put(
+            security: 'is_granted("ROLE_ADMIN") && object.content.author === user',
+        ),
         new Delete(
             security: 'is_granted("ROLE_ADMIN") && object.content.author === user',
         ),
@@ -45,7 +49,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: 'is_granted("ROLE_ADMIN")',
             provider: CreateMetaProvider::class,
             processor: CreateMetaProcessor::class
-        ),
+        )
     ],
     uriVariables: [
         'slug' => new Link(
